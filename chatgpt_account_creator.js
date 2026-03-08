@@ -380,7 +380,7 @@ class ChatGPTAccountCreator {
             // Click Sign up button using XPath
             this.log("🔘 Processing 'Sign up'");
             try {
-                const signupButtonXPath = '/html/body/div[2]/div[1]/div/div[2]/div/header/div[3]/div[2]/div/div/div/button[2]/div';
+                const signupButtonXPath = '/html/body/div[2]/div[1]/div/div/div[2]/div/header/div[3]/div[2]/div/div/div/button[2]/div';
                 const signupButton = page.locator(`xpath=${signupButtonXPath}`);
 
                 // Wait for the signup button to be visible with longer timeout
@@ -592,7 +592,7 @@ class ChatGPTAccountCreator {
 
             // Click Continue to complete signup
             try {
-                const continueButton = page.getByRole('button', { name: 'Continue' });
+                const continueButton = page.getByRole('button', { name: 'Finish creating account' });
                 await continueButton.waitFor({ state: 'visible', timeout: 10000 });
 
                 const isEnabled = await continueButton.isEnabled();
