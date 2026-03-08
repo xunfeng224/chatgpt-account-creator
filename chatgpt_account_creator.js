@@ -52,7 +52,26 @@ class ChatGPTAccountCreator {
                 const config = JSON.parse(configData);
                 Object.assign(defaultConfig, config);
 
-                if (defaultConfig.password) {
+                if (!defaultConfig.password) {
+                    const passwordLength = 12;
+                    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+                    // 确保密码中有一个点号
+                    let randomPassword = '';
+                    randomPassword += '.'; // 强制加入一个点号
+
+                    // 生成剩余的字符
+                    for (let i = 1; i < passwordLength; i++) {
+                        const randomIndex = Math.floor(Math.random() * characters.length);
+                        randomPassword += characters[randomIndex];
+                    }
+
+                    // 打乱密码，确保点号的位置是随机的
+                    randomPassword = randomPassword.split('').sort(() => Math.random() - 0.5).join('');
+                    // 回填到 defaultConfig.password
+                    defaultConfig.password = randomPassword;
+                    this.log(`🔑 Generated random password: ${randomPassword}`, "INFO");
+                } else {
                     const password = defaultConfig.password;
                     if (password.length < 12) {
                         this.log(`⚠️ Warning: Password in config.json is less than 12 characters. ChatGPT requires at least 12 characters.`, "WARNING");
@@ -235,7 +254,6 @@ class ChatGPTAccountCreator {
 
         const email = await this.generateRandomEmail();
         const password = this.config.password;
-
         if (!password) {
             this.log("❌ Error: No password found in config.json! Please add a 'password' field to config.json", "ERROR");
             return false;
